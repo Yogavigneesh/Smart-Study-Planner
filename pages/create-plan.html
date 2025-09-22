@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Study Plan - Smart Study Planner</title>
+    
+    <!-- Favicon -->
+     <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Smart Study Planner</span>
+            </div>
+            <div class="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="create-plan.html" class="nav-link active">Create Plan</a>
+                <a href="view-plans.html" class="nav-link">All Plans</a>
+                <a href="settings.html" class="nav-link">Settings</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="create-plan-main">
+        <div class="container">
+            <!-- Page Header -->
+            <header class="page-header">
+                <div class="header-content">
+                    <h1 class="page-title">
+                        <i class="fas fa-plus-circle"></i>
+                        <span id="pageTitle">Create New Study Plan</span>
+                    </h1>
+                    <p class="page-subtitle">
+                        Set up your study goals, deadlines, and track your progress with visual timelines.
+                    </p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Dashboard
+                    </button>
+                </div>
+            </header>
+
+            <!-- Study Plan Form -->
+            <section class="form-section">
+                <div class="form-container">
+                    <form id="studyPlanForm" class="study-plan-form">
+                        <!-- Basic Information -->
+                        <div class="form-section-header">
+                            <h2>
+                                <i class="fas fa-info-circle"></i>
+                                Basic Information
+                            </h2>
+                            <p>Start with the essentials - what are you studying and when do you need to finish?</p>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="planTitle" class="form-label">
+                                    Study Plan Title *
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="planTitle" 
+                                    name="title" 
+                                    class="form-input" 
+                                    placeholder="e.g., Data Structures & Algorithms"
+                                    required
+                                    maxlength="100"
+                                >
+                                <small class="form-help">Choose a clear, descriptive name for your study plan</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="planSubject" class="form-label">
+                                    Subject/Category
+                                </label>
+                                <select id="planSubject" name="subject" class="form-select">
+                                    <option value="">Select a subject...</option>
+                                    <option value="computer-science">Computer Science</option>
+                                    <option value="mathematics">Mathematics</option>
+                                    <option value="physics">Physics</option>
+                                    <option value="chemistry">Chemistry</option>
+                                    <option value="biology">Biology</option>
+                                    <option value="engineering">Engineering</option>
+                                    <option value="cybersecurity">Cybersecurity</option>
+                                    <option value="data-science">Data Science</option>
+                                    <option value="programming">Programming</option>
+                                    <option value="language">Language Learning</option>
+                                    <option value="business">Business</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="planDescription" class="form-label">
+                                Description
+                            </label>
+                            <textarea 
+                                id="planDescription" 
+                                name="description" 
+                                class="form-textarea" 
+                                placeholder="Describe what you'll be studying, your goals, and any specific objectives..."
+                                rows="4"
+                                maxlength="500"
+                            ></textarea>
+                            <small class="form-help">Optional: Add details about your study objectives and methods</small>
+                        </div>
+
+                        <!-- Timeline & Priority -->
+                        <div class="form-section-header">
+                            <h2>
+                                <i class="fas fa-calendar-alt"></i>
+                                Timeline & Priority
+                            </h2>
+                            <p>Set your deadline and priority level to stay organized and focused.</p>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="startDate" class="form-label">
+                                    Start Date
+                                </label>
+                                <input 
+                                    type="date" 
+                                    id="startDate" 
+                                    name="startDate" 
+                                    class="form-input"
+                                >
+                                <small class="form-help">When do you plan to start studying?</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="deadline" class="form-label">
+                                    Target Deadline *
+                                </label>
+                                <input 
+                                    type="date" 
+                                    id="deadline" 
+                                    name="deadline" 
+                                    class="form-input"
+                                    required
+                                >
+                                <small class="form-help">When do you need to complete this?</small>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="priority" class="form-label">
+                                    Priority Level *
+                                </label>
+                                <select id="priority" name="priority" class="form-select" required>
+                                    <option value="">Select priority...</option>
+                                    <option value="high">🔴 High Priority</option>
+                                    <option value="medium" selected>🟡 Medium Priority</option>
+                                    <option value="low">🟢 Low Priority</option>
+                                </select>
+                                <small class="form-help">How important is this study plan?</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estimatedHours" class="form-label">
+                                    Estimated Study Hours
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="estimatedHours" 
+                                    name="estimatedHours" 
+                                    class="form-input"
+                                    placeholder="e.g., 40"
+                                    min="1"
+                                    max="1000"
+                                >
+                                <small class="form-help">Total hours you expect to spend</small>
+                            </div>
+                        </div>
+
+                        <!-- Study Tasks/Topics -->
+                        <div class="form-section-header">
+                            <h2>
+                                <i class="fas fa-tasks"></i>
+                                Study Tasks & Topics
+                            </h2>
+                            <p>Break down your study plan into specific tasks or topics for better tracking.</p>
+                        </div>
+
+                        <div class="tasks-container">
+                            <div class="tasks-header">
+                                <h3>Study Tasks</h3>
+                                <button type="button" class="btn btn-primary btn-sm" id="addTaskBtn">
+                                    <i class="fas fa-plus"></i>
+                                    Add Task
+                                </button>
+                            </div>
+                            
+                            <div class="tasks-list" id="tasksList">
+                                <!-- Tasks will be dynamically added here -->
+                            </div>
+                            
+                            <div class="tasks-template" id="taskTemplate" style="display: none;">
+                                <div class="task-item">
+                                    <div class="task-drag-handle">
+                                        <i class="fas fa-grip-vertical"></i>
+                                    </div>
+                                    <div class="task-content">
+                                        <input 
+                                            type="text" 
+                                            class="form-input task-title" 
+                                            placeholder="Enter task or topic..."
+                                            required
+                                        >
+                                        <textarea 
+                                            class="form-textarea task-description" 
+                                            placeholder="Optional: Add task details..."
+                                            rows="2"
+                                        ></textarea>
+                                        <div class="task-meta">
+                                            <input 
+                                                type="number" 
+                                                class="form-input task-hours" 
+                                                placeholder="Hours"
+                                                min="0.5"
+                                                step="0.5"
+                                            >
+                                            <select class="form-select task-difficulty">
+                                                <option value="easy">Easy</option>
+                                                <option value="medium" selected>Medium</option>
+                                                <option value="hard">Hard</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="task-actions">
+                                        <button type="button" class="btn-icon delete remove-task">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Study Method & Resources -->
+                        <div class="form-section-header">
+                            <h2>
+                                <i class="fas fa-book"></i>
+                                Study Methods & Resources
+                            </h2>
+                            <p>Define how you'll study and what resources you'll use.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Study Methods</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="methods" value="reading">
+                                    <span class="checkmark"></span>
+                                    Reading & Note-taking
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="methods" value="practice">
+                                    <span class="checkmark"></span>
+                                    Practice Problems
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="methods" value="videos">
+                                    <span class="checkmark"></span>
+                                    Video Tutorials
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="methods" value="flashcards">
+                                    <span class="checkmark"></span>
+                                    Flashcards
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="methods" value="group">
+                                    <span class="checkmark"></span>
+                                    Group Study
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="methods" value="projects">
+                                    <span class="checkmark"></span>
+                                    Hands-on Projects
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resources" class="form-label">
+                                Resources & Materials
+                            </label>
+                            <textarea 
+                                id="resources" 
+                                name="resources" 
+                                class="form-textarea" 
+                                placeholder="List your textbooks, online courses, websites, or other study materials..."
+                                rows="3"
+                                maxlength="1000"
+                            ></textarea>
+                            <small class="form-help">Optional: Keep track of your study materials</small>
+                        </div>
+
+                        <!-- Reminders & Notifications -->
+                        <div class="form-section-header">
+                            <h2>
+                                <i class="fas fa-bell"></i>
+                                Reminders & Notifications
+                            </h2>
+                            <p>Set up notifications to stay on track with your study schedule.</p>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Reminder Settings</label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="reminderFrequency" value="none">
+                                        <span class="radio-mark"></span>
+                                        No reminders
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="reminderFrequency" value="daily" checked>
+                                        <span class="radio-mark"></span>
+                                        Daily reminders
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="reminderFrequency" value="weekly">
+                                        <span class="radio-mark"></span>
+                                        Weekly reminders
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="reminderFrequency" value="deadline">
+                                        <span class="radio-mark"></span>
+                                        Only deadline reminders
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reminderTime" class="form-label">
+                                    Reminder Time
+                                </label>
+                                <select id="reminderTime" name="reminderTime" class="form-select">
+                                    <option value="9">9:00 AM</option>
+                                    <option value="12">12:00 PM</option>
+                                    <option value="15">3:00 PM</option>
+                                    <option value="18" selected>6:00 PM</option>
+                                    <option value="20">8:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='dashboard.html'">
+                                <i class="fas fa-times"></i>
+                                Cancel
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="saveAsDraftBtn">
+                                <i class="fas fa-save"></i>
+                                Save as Draft
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="createPlanBtn">
+                                <i class="fas fa-check"></i>
+                                <span id="submitBtnText">Create Study Plan</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Preview Panel -->
+                <div class="preview-panel" id="previewPanel">
+                    <div class="preview-header">
+                        <h3>
+                            <i class="fas fa-eye"></i>
+                            Plan Preview
+                        </h3>
+                        <button type="button" class="btn-icon" id="togglePreview">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="preview-content" id="previewContent">
+                        <div class="preview-card">
+                            <h4 id="previewTitle">Enter a title...</h4>
+                            <p id="previewDescription">Add a description...</p>
+                            <div class="preview-meta">
+                                <span id="previewDeadline">No deadline set</span>
+                                <span id="previewPriority" class="priority-badge medium">Medium</span>
+                            </div>
+                            <div class="preview-progress">
+                                <span>Tasks: <span id="previewTaskCount">0</span></span>
+                                <span>Hours: <span id="previewHours">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                    Success!
+                </h3>
+            </div>
+            <div class="modal-body">
+                <p>Your study plan has been created successfully! What would you like to do next?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="window.location.href='create-plan.html'">
+                    Create Another Plan
+                </button>
+                <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">
+                    Go to Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner-large"></div>
+            <p class="loading-text">Creating your study plan...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="../js/app.js"></script>
+    <script src="../js/localStorage.js"></script>
+    <script src="../js/studyPlan.js"></script>
+    <script>
+        // Global variables
+        let isEditMode = false;
+        let editingPlanId = null;
+        let taskCounter = 0;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Create Plan page loaded');
+            initializeCreatePlan();
+        });
+
+        // Initialize create plan functionality
+        function initializeCreatePlan() {
+            setupFormEvents();
+            setupTaskManagement();
+            setupPreview();
+            checkEditMode();
+            setDefaultValues();
+        }
+
+        // Check if we're in edit mode
+        function checkEditMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const editId = urlParams.get('edit');
+            
+            if (editId) {
+                isEditMode = true;
+                editingPlanId = editId;
+                loadPlanForEdit(editId);
+                
+                document.getElementById('pageTitle').innerHTML = 
+                    '<i class="fas fa-edit"></i> Edit Study Plan';
+                document.getElementById('submitBtnText').textContent = 'Update Study Plan';
+            }
+        }
+
+        // Load plan data for editing
+        function loadPlanForEdit(planId) {
+            const plan = studyApp.studyPlans.find(p => p.id === planId);
+            if (!plan) {
+                studyApp.showNotification('Study plan not found!', 'error');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Populate form fields
+            document.getElementById('planTitle').value = plan.title || '';
+            document.getElementById('planSubject').value = plan.subject || '';
+            document.getElementById('planDescription').value = plan.description || '';
+            document.getElementById('startDate').value = plan.startDate || '';
+            document.getElementById('deadline').value = plan.deadline || '';
+            document.getElementById('priority').value = plan.priority || 'medium';
+            document.getElementById('estimatedHours').value = plan.estimatedHours || '';
+            document.getElementById('resources').value = plan.resources || '';
+
+            // Load study methods
+            if (plan.methods) {
+                plan.methods.forEach(method => {
+                    const checkbox = document.querySelector(`input[name="methods"][value="${method}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+
+            // Load reminder settings
+            if (plan.reminderFrequency) {
+                const radio = document.querySelector(`input[name="reminderFrequency"][value="${plan.reminderFrequency}"]`);
+                if (radio) radio.checked = true;
+            }
+            
+            if (plan.reminderTime) {
+                document.getElementById('reminderTime').value = plan.reminderTime;
+            }
+
+            // Load tasks
+            if (plan.tasks && plan.tasks.length > 0) {
+                plan.tasks.forEach(task => {
+                    addTask(task);
+                });
+            }
+
+            updatePreview();
+        }
+
+        // Set default values
+        function setDefaultValues() {
+            // Set today as start date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').value = today;
+
+            // Set default deadline (1 month from today)
+            const nextMonth = new Date();
+            nextMonth.setMonth(nextMonth.getMonth() + 1);
+            document.getElementById('deadline').value = nextMonth.toISOString().split('T')[0];
+
+            // Add one default task
+            if (!isEditMode) {
+                addTask();
+            }
+        }
+
+        // Setup form events
+        function setupFormEvents() {
+            const form = document.getElementById('studyPlanForm');
+            
+            form.addEventListener('submit', handleFormSubmit);
+            form.addEventListener('input', updatePreview);
+            form.addEventListener('change', updatePreview);
+            
+            document.getElementById('saveAsDraftBtn').addEventListener('click', saveAsDraft);
+        }
+
+        // Handle form submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+
+            showLoading(true);
+            
+            setTimeout(() => {
+                const planData = collectFormData();
+                
+                if (isEditMode) {
+                    updateExistingPlan(planData);
+                } else {
+                    createNewPlan(planData);
+                }
+                
+                showLoading(false);
+                studyApp.openModal('successModal');
+            }, 1000);
+        }
+
+        // Validate form
+        function validateForm() {
+            const title = document.getElementById('planTitle').value.trim();
+            const deadline = document.getElementById('deadline').value;
+            const priority = document.getElementById('priority').value;
+            
+            if (!title) {
+                studyApp.showNotification('Please enter a study plan title', 'error');
+                document.getElementById('planTitle').focus();
+                return false;
+            }
+            
+            if (!deadline) {
+                studyApp.showNotification('Please set a target deadline', 'error');
+                document.getElementById('deadline').focus();
+                return false;
+            }
+            
+            if (!priority) {
+                studyApp.showNotification('Please select a priority level', 'error');
+                document.getElementById('priority').focus();
+                return false;
+            }
+
+            // Validate deadline is in the future
+            const deadlineDate = new Date(deadline);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (deadlineDate < today) {
+                studyApp.showNotification('Deadline must be in the future', 'error');
+                document.getElementById('deadline').focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        // Collect form data
+        function collectFormData() {
+            const formData = new FormData(document.getElementById('studyPlanForm'));
+            const methods = Array.from(document.querySelectorAll('input[name="methods"]:checked')).map(cb => cb.value);
+            const tasks = collectTasks();
+            
+            const planData = {
+                id: isEditMode ? editingPlanId : studyApp.generateId(),
+                title: formData.get('title').trim(),
+                subject: formData.get('subject') || 'other',
+                description: formData.get('description')?.trim() || '',
+                startDate: formData.get('startDate'),
+                deadline: formData.get('deadline'),
+                priority: formData.get('priority'),
+                estimatedHours: parseInt(formData.get('estimatedHours')) || 0,
+                resources: formData.get('resources')?.trim() || '',
+                methods: methods,
+                reminderFrequency: formData.get('reminderFrequency') || 'daily',
+                reminderTime: parseInt(formData.get('reminderTime')) || 18,
+                tasks: tasks,
+                status: 'active',
+                progress: 0,
+                createdAt: isEditMode ? 
+                    studyApp.studyPlans.find(p => p.id === editingPlanId)?.createdAt : 
+                    new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            return planData;
+        }
+
+        // Collect tasks from form
+        function collectTasks() {
+            const taskItems = document.querySelectorAll('.task-item');
+            const tasks = [];
+            
+            taskItems.forEach((item, index) => {
+                const title = item.querySelector('.task-title').value.trim();
+                const description = item.querySelector('.task-description').value.trim();
+                const hours = parseFloat(item.querySelector('.task-hours').value) || 1;
+                const difficulty = item.querySelector('.task-difficulty').value;
+                
+                if (title) {
+                    tasks.push({
+                        id: studyApp.generateId(),
+                        title: title,
+                        description: description,
+                        estimatedHours: hours,
+                        difficulty: difficulty,
+                        completed: false,
+                        order: index
+                    });
+                }
+            });
+            
+            return tasks;
+        }
+
+        // Create new plan
+        function createNewPlan(planData) {
+            studyApp.studyPlans.push(planData);
+            studyApp.saveToStorage();
+            studyApp.showNotification('Study plan created successfully!', 'success');
+            console.log('New study plan created:', planData);
+        }
+
+        // Update existing plan
+        function updateExistingPlan(planData) {
+            const index = studyApp.studyPlans.findIndex(p => p.id === editingPlanId);
+            if (index !== -1) {
+                studyApp.studyPlans[index] = planData;
+                studyApp.saveToStorage();
+                studyApp.showNotification('Study plan updated successfully!', 'success');
+                console.log('Study plan updated:', planData);
+            }
+        }
+
+        // Save as draft
+        function saveAsDraft() {
+            const planData = collectFormData();
+            planData.status = 'draft';
+            
+            if (isEditMode) {
+                updateExistingPlan(planData);
+            } else {
+                createNewPlan(planData);
+            }
+            
+            studyApp.showNotification('Study plan saved as draft', 'success');
+        }
+
+        // Setup task management
+        function setupTaskManagement() {
+            document.getElementById('addTaskBtn').addEventListener('click', () => addTask());
+            
+            // Event delegation for task actions
+            document.getElementById('tasksList').addEventListener('click', (e) => {
+                if (e.target.closest('.remove-task')) {
+                    removeTask(e.target.closest('.task-item'));
+                }
+            });
+        }
+
+        // Add task
+        function addTask(taskData = null) {
+            const template = document.getElementById('taskTemplate').cloneNode(true);
+            template.id = '';
+            template.style.display = 'block';
+            template.classList.add('task-item-' + (++taskCounter));
+            
+            // Populate with data if provided (for editing)
+            if (taskData) {
+                template.querySelector('.task-title').value = taskData.title || '';
+                template.querySelector('.task-description').value = taskData.description || '';
+                template.querySelector('.task-hours').value = taskData.estimatedHours || '';
+                template.querySelector('.task-difficulty').value = taskData.difficulty || 'medium';
+            }
+            
+            document.getElementById('tasksList').appendChild(template);
+            
+            // Focus on the new task title input
+            template.querySelector('.task-title').focus();
+            
+            updatePreview();
+        }
+
+        // Remove task
+        function removeTask(taskElement) {
+            if (document.querySelectorAll('.task-item').length <= 1) {
+                studyApp.showNotification('You must have at least one task', 'warning');
+                return;
+            }
+            
+            taskElement.remove();
+            updatePreview();
+        }
+
+        // Setup preview
+        function setupPreview() {
+            document.getElementById('togglePreview').addEventListener('click', togglePreview);
+            updatePreview();
+        }
+
+        // Toggle preview panel
+        function togglePreview() {
+            const panel = document.getElementById('previewPanel');
+            const button = document.getElementById('togglePreview');
+            
+            panel.classList.toggle('collapsed');
+            
+            const icon = button.querySelector('i');
+            if (panel.classList.contains('collapsed')) {
+                icon.className = 'fas fa-chevron-left';
+            } else {
+                icon.className = 'fas fa-chevron-right';
+            }
+        }
+
+        // Update preview
+        function updatePreview() {
+            const title = document.getElementById('planTitle').value || 'Enter a title...';
+            const description = document.getElementById('planDescription').value || 'Add a description...';
+            const deadline = document.getElementById('deadline').value;
+            const priority = document.getElementById('priority').value || 'medium';
+            const estimatedHours = document.getElementById('estimatedHours').value || '0';
+            const taskCount = document.querySelectorAll('.task-item .task-title').length;
+            
+            document.getElementById('previewTitle').textContent = title;
+            document.getElementById('previewDescription').textContent = description;
+            document.getElementById('previewDeadline').textContent = 
+                deadline ? studyApp.formatDate(deadline) : 'No deadline set';
+            
+            const priorityBadge = document.getElementById('previewPriority');
+            priorityBadge.textContent = priority.charAt(0).toUpperCase() + priority.slice(1);
+            priorityBadge.className = `priority-badge ${priority}`;
+            
+            document.getElementById('previewTaskCount').textContent = taskCount;
+            document.getElementById('previewHours').textContent = estimatedHours;
+        }
+
+        // Show/hide loading
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
+        }
+
+        // Auto-save draft functionality
+        let autoSaveTimeout;
+        function setupAutoSave() {
+            document.getElementById('studyPlanForm').addEventListener('input', () => {
+                clearTimeout(autoSaveTimeout);
+                autoSaveTimeout = setTimeout(() => {
+                    // Auto-save logic here if needed
+                    console.log('Auto-saving draft...');
+                }, 30000); // Auto-save after 30 seconds of inactivity
+            });
+        }
+    </script>
+</body>
+</html>

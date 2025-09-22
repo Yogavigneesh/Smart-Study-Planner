@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Smart Study Planner</title>
+    
+    <!-- Favicon -->
+     <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Smart Study Planner</span>
+            </div>
+            <div class="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="create-plan.html" class="nav-link">Create Plan</a>
+                <a href="view-plans.html" class="nav-link">All Plans</a>
+                <a href="settings.html" class="nav-link">Settings</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Content -->
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Dashboard Header -->
+            <header class="dashboard-header">
+                <div class="welcome-section">
+                    <h1 class="dashboard-title">Welcome back! 👋</h1>
+                    <p class="dashboard-subtitle">
+                        Here's your study progress overview. Keep up the great work!
+                    </p>
+                </div>
+                <div class="quick-actions">
+                    <button class="btn btn-primary" onclick="window.location.href='create-plan.html'">
+                        <i class="fas fa-plus"></i>
+                        New Study Plan
+                    </button>
+                    <button class="btn btn-secondary" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                </div>
+            </header>
+
+            <!-- Statistics Cards -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number" id="totalPlansCount">0</h3>
+                            <p class="stat-label">Total Study Plans</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+2 this week</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number" id="activePlansCount">0</h3>
+                            <p class="stat-label">Active Plans</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>In progress</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number" id="upcomingDeadlines">0</h3>
+                            <p class="stat-label">Due This Week</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>Needs attention</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number" id="completedPlans">0</h3>
+                            <p class="stat-label">Completed Plans</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-medal"></i>
+                            <span>Well done!</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Current Study Plans -->
+            <section class="current-plans-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-bookmark"></i>
+                        Current Study Plans
+                    </h2>
+                    <div class="section-actions">
+                        <select id="filterSelect" class="form-select">
+                            <option value="all">All Plans</option>
+                            <option value="active">Active</option>
+                            <option value="due-soon">Due Soon</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <select id="sortSelect" class="form-select">
+                            <option value="recent">Most Recent</option>
+                            <option value="deadline">By Deadline</option>
+                            <option value="priority">By Priority</option>
+                            <option value="progress">By Progress</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Study Plans Grid -->
+                <div class="plans-grid" id="plansGrid">
+                    <!-- Plans will be dynamically loaded here -->
+                </div>
+                
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="empty-state-title">No Study Plans Yet</h3>
+                    <p class="empty-state-description">
+                        Create your first study plan to start organizing your academic goals and track your progress.
+                    </p>
+                    <button class="btn btn-primary" onclick="window.location.href='create-plan.html'">
+                        <i class="fas fa-plus"></i>
+                        Create Your First Plan
+                    </button>
+                </div>
+            </section>
+
+            <!-- Quick Progress Overview -->
+            <section class="progress-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        Progress Overview
+                    </h2>
+                </div>
+                
+                <div class="progress-cards">
+                    <div class="progress-card">
+                        <div class="progress-card-header">
+                            <h3>Weekly Progress</h3>
+                            <span class="progress-percentage" id="weeklyProgress">0%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar">
+                                <div class="progress" id="weeklyProgressBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <p class="progress-description">Tasks completed this week</p>
+                    </div>
+                    
+                    <div class="progress-card">
+                        <div class="progress-card-header">
+                            <h3>Monthly Progress</h3>
+                            <span class="progress-percentage" id="monthlyProgress">0%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar">
+                                <div class="progress" id="monthlyProgressBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <p class="progress-description">Overall monthly achievement</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="activity-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-history"></i>
+                        Recent Activity
+                    </h2>
+                </div>
+                
+                <div class="activity-timeline" id="activityTimeline">
+                    <!-- Activity items will be dynamically loaded here -->
+                </div>
+                
+                <div class="empty-state" id="activityEmpty" style="display: none;">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="empty-state-title">No Recent Activity</h3>
+                    <p class="empty-state-description">
+                        Start working on your study plans to see your activity here.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Upcoming Deadlines -->
+            <section class="deadlines-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-calendar-exclamation"></i>
+                        Upcoming Deadlines
+                    </h2>
+                </div>
+                
+                <div class="deadlines-list" id="deadlinesList">
+                    <!-- Deadline items will be dynamically loaded here -->
+                </div>
+                
+                <div class="empty-state" id="deadlinesEmpty" style="display: none;">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="empty-state-title">No Upcoming Deadlines</h3>
+                    <p class="empty-state-description">
+                        Great! You're all caught up with your deadlines.
+                    </p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Study Plan Card Modal -->
+    <div class="modal-overlay" id="planModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Study Plan Details</h3>
+                <button class="modal-close" onclick="studyApp.closeModal('planModal')">&times;</button>
+            </div>
+            <div class="modal-body" id="planModalBody">
+                <!-- Plan details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="studyApp.closeModal('planModal')">Close</button>
+                <button class="btn btn-primary" id="editPlanBtn">Edit Plan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Delete</h3>
+                <button class="modal-close" onclick="studyApp.closeModal('deleteModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this study plan? This action cannot be undone.</p>
+                <div class="plan-preview" id="deletePreview">
+                    <!-- Plan preview will be shown here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="studyApp.closeModal('deleteModal')">Cancel</button>
+                <button class="btn" style="background-color: var(--error); color: var(--white);" id="confirmDeleteBtn">
+                    <i class="fas fa-trash"></i>
+                    Delete Plan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner-large"></div>
+            <p class="loading-text">Loading your study plans...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="../js/app.js"></script>
+    <script src="../js/localStorage.js"></script>
+    <script src="../js/studyPlan.js"></script>
+    <script src="../js/timeline.js"></script>
+    <script src="../js/notifications.js"></script>
+    <script>
+        // Dashboard-specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard page loaded');
+            initializeDashboard();
+        });
+
+        // Initialize dashboard functionality
+        function initializeDashboard() {
+            loadDashboardData();
+            setupDashboardEvents();
+            setupPeriodicUpdates();
+        }
+
+        // Load dashboard data
+        function loadDashboardData() {
+            showLoading(true);
+            
+            setTimeout(() => {
+                updateStatistics();
+                loadStudyPlans();
+                loadRecentActivity();
+                loadUpcomingDeadlines();
+                updateProgressOverview();
+                showLoading(false);
+            }, 500); // Simulate loading time
+        }
+
+        // Update statistics cards
+        function updateStatistics() {
+            const plans = studyApp.studyPlans || [];
+            
+            document.getElementById('totalPlansCount').textContent = plans.length;
+            document.getElementById('activePlansCount').textContent = 
+                plans.filter(plan => plan.status === 'active').length;
+            document.getElementById('completedPlans').textContent = 
+                plans.filter(plan => plan.status === 'completed').length;
+            
+            // Calculate upcoming deadlines (within 7 days)
+            const now = new Date();
+            const weekFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+            const upcomingCount = plans.filter(plan => {
+                if (!plan.deadline) return false;
+                const deadline = new Date(plan.deadline);
+                return deadline >= now && deadline <= weekFromNow;
+            }).length;
+            
+            document.getElementById('upcomingDeadlines').textContent = upcomingCount;
+        }
+
+        // Load study plans into grid
+        function loadStudyPlans() {
+            const plansGrid = document.getElementById('plansGrid');
+            const emptyState = document.getElementById('emptyState');
+            const plans = studyApp.studyPlans || [];
+            
+            if (plans.length === 0) {
+                plansGrid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            plansGrid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            // Sort plans by most recent first
+            const sortedPlans = [...plans].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            plansGrid.innerHTML = sortedPlans.map(plan => createPlanCard(plan)).join('');
+            
+            // Add event listeners to plan cards
+            addPlanCardEvents();
+        }
+
+        // Create study plan card HTML
+        function createPlanCard(plan) {
+            const progress = studyApp.calculateProgress(plan.tasks || []);
+            const priorityClass = plan.priority || 'medium';
+            const statusClass = plan.status || 'active';
+            
+            return `
+                <div class="study-card" data-plan-id="${plan.id}">
+                    <div class="card-header">
+                        <h3 class="card-title">${plan.title}</h3>
+                        <span class="card-priority ${priorityClass}">${priorityClass}</span>
+                    </div>
+                    <p class="card-description">${plan.description || 'No description provided.'}</p>
+                    <div class="card-progress">
+                        <div class="progress-header">
+                            <span class="progress-label">Progress</span>
+                            <span class="progress-percentage">${progress}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: ${progress}%"></div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="card-date">
+                            <i class="fas fa-calendar"></i>
+                            Due: ${studyApp.formatRelativeDate(plan.deadline)}
+                        </span>
+                        <div class="card-actions">
+                            <button class="btn-icon view" onclick="viewPlan('${plan.id}')" data-tooltip="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-icon edit" onclick="editPlan('${plan.id}')" data-tooltip="Edit Plan">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon delete" onclick="deletePlan('${plan.id}')" data-tooltip="Delete Plan">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Add event listeners to plan cards
+        function addPlanCardEvents() {
+            // Filter and sort functionality
+            document.getElementById('filterSelect').addEventListener('change', filterPlans);
+            document.getElementById('sortSelect').addEventListener('change', sortPlans);
+            
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', () => {
+                loadDashboardData();
+                studyApp.showNotification('Dashboard refreshed!', 'success');
+            });
+        }
+
+        // Filter plans based on selection
+        function filterPlans() {
+            const filterValue = document.getElementById('filterSelect').value;
+            const planCards = document.querySelectorAll('.study-card');
+            
+            planCards.forEach(card => {
+                const planId = card.dataset.planId;
+                const plan = studyApp.studyPlans.find(p => p.id === planId);
+                
+                let showCard = true;
+                
+                switch (filterValue) {
+                    case 'active':
+                        showCard = plan.status === 'active';
+                        break;
+                    case 'completed':
+                        showCard = plan.status === 'completed';
+                        break;
+                    case 'due-soon':
+                        const now = new Date();
+                        const weekFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+                        const deadline = new Date(plan.deadline);
+                        showCard = deadline >= now && deadline <= weekFromNow;
+                        break;
+                    case 'all':
+                    default:
+                        showCard = true;
+                        break;
+                }
+                
+                card.style.display = showCard ? 'block' : 'none';
+            });
+        }
+
+        // Sort plans based on selection
+        function sortPlans() {
+            const sortValue = document.getElementById('sortSelect').value;
+            const plansGrid = document.getElementById('plansGrid');
+            const planCards = Array.from(plansGrid.children);
+            
+            planCards.sort((a, b) => {
+                const planA = studyApp.studyPlans.find(p => p.id === a.dataset.planId);
+                const planB = studyApp.studyPlans.find(p => p.id === b.dataset.planId);
+                
+                switch (sortValue) {
+                    case 'deadline':
+                        return new Date(planA.deadline) - new Date(planB.deadline);
+                    case 'priority':
+                        const priorityOrder = { high: 3, medium: 2, low: 1 };
+                        return priorityOrder[planB.priority] - priorityOrder[planA.priority];
+                    case 'progress':
+                        const progressA = studyApp.calculateProgress(planA.tasks || []);
+                        const progressB = studyApp.calculateProgress(planB.tasks || []);
+                        return progressB - progressA;
+                    case 'recent':
+                    default:
+                        return new Date(planB.createdAt) - new Date(planA.createdAt);
+                }
+            });
+            
+            // Reorder DOM elements
+            planCards.forEach(card => plansGrid.appendChild(card));
+        }
+
+        // Load recent activity
+        function loadRecentActivity() {
+            const activityTimeline = document.getElementById('activityTimeline');
+            const activityEmpty = document.getElementById('activityEmpty');
+            
+            // For now, show empty state
+            activityTimeline.style.display = 'none';
+            activityEmpty.style.display = 'block';
+        }
+
+        // Load upcoming deadlines
+        function loadUpcomingDeadlines() {
+            const deadlinesList = document.getElementById('deadlinesList');
+            const deadlinesEmpty = document.getElementById('deadlinesEmpty');
+            
+            // For now, show empty state
+            deadlinesList.style.display = 'none';
+            deadlinesEmpty.style.display = 'block';
+        }
+
+        // Update progress overview
+        function updateProgressOverview() {
+            // Placeholder values - implement actual calculations
+            document.getElementById('weeklyProgress').textContent = '65%';
+            document.getElementById('weeklyProgressBar').style.width = '65%';
+            document.getElementById('monthlyProgress').textContent = '78%';
+            document.getElementById('monthlyProgressBar').style.width = '78%';
+        }
+
+        // Setup periodic updates
+        function setupPeriodicUpdates() {
+            // Update dashboard every 5 minutes
+            setInterval(() => {
+                updateStatistics();
+                updateProgressOverview();
+            }, 5 * 60 * 1000);
+        }
+
+        // Show/hide loading overlay
+        function showLoading(show) {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.style.display = show ? 'flex' : 'none';
+        }
+
+        // Plan action functions
+        function viewPlan(planId) {
+            const plan = studyApp.studyPlans.find(p => p.id === planId);
+            if (plan) {
+                // Implement plan view modal
+                studyApp.showNotification('Plan details feature coming soon!', 'info');
+            }
+        }
+
+        function editPlan(planId) {
+            // Navigate to edit page with plan ID
+            window.location.href = `create-plan.html?edit=${planId}`;
+        }
+
+        function deletePlan(planId) {
+            const plan = studyApp.studyPlans.find(p => p.id === planId);
+            if (plan) {
+                // Show delete confirmation modal
+                document.getElementById('deletePreview').innerHTML = `
+                    <h4>${plan.title}</h4>
+                    <p>${plan.description}</p>
+                `;
+                
+                document.getElementById('confirmDeleteBtn').onclick = () => {
+                    // Remove plan from array
+                    studyApp.studyPlans = studyApp.studyPlans.filter(p => p.id !== planId);
+                    studyApp.saveToStorage();
+                    
+                    // Remove card from DOM
+                    const planCard = document.querySelector(`[data-plan-id="${planId}"]`);
+                    if (planCard) {
+                        planCard.remove();
+                    }
+                    
+                    // Update statistics
+                    updateStatistics();
+                    
+                    // Close modal and show success message
+                    studyApp.closeModal('deleteModal');
+                    studyApp.showNotification('Study plan deleted successfully', 'success');
+                    
+                    // Check if grid is now empty
+                    if (studyApp.studyPlans.length === 0) {
+                        document.getElementById('plansGrid').style.display = 'none';
+                        document.getElementById('emptyState').style.display = 'block';
+                    }
+                };
+                
+                studyApp.openModal('deleteModal');
+            }
+        }
+    </script>
+</body>
+</html>
