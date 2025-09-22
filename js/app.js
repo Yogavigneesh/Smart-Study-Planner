@@ -1,6 +1,19 @@
 // ===== SMART STUDY PLANNER - MAIN APPLICATION ===== //
 
 // Application State
+// SPEED MODE: Remove all artificial delays
+window.SPEED_MODE = true;
+
+// Override setTimeout for loading delays
+const originalSetTimeout = window.setTimeout;
+window.setTimeout = function(callback, delay) {
+    if (window.SPEED_MODE && delay > 100) {
+        // Convert long delays to instant execution
+        return originalSetTimeout(callback, 10);
+    }
+    return originalSetTimeout(callback, delay);
+};
+
 class StudyPlannerApp {
     constructor() {
         this.currentPage = 'home';
