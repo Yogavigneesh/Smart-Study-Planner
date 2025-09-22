@@ -401,21 +401,21 @@
         function loadAllPlans() {
             showLoading(true);
             
-            setTimeout(() => {
-                const allPlans = studyApp.studyPlans || [];
-                filteredPlans = [...allPlans];
-                
-                if (allPlans.length === 0) {
-                    showNoPlansState();
-                } else {
-                    hideNoPlansState();
-                    applySorting();
-                    renderPlans();
-                }
-                
-                updateSummary();
-                showLoading(false);
-            }, 500);
+            // Load instantly without delay
+const allPlans = studyApp.studyPlans || [];
+filteredPlans = [...allPlans];
+
+if (allPlans.length === 0) {
+    showNoPlansState();
+} else {
+    hideNoPlansState();
+    applySorting();
+    renderPlans();
+}
+
+updateSummary();
+showLoading(false);
+
         }
 
         // Setup event listeners

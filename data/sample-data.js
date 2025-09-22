@@ -745,14 +745,15 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Show welcome message
             setTimeout(() => {
-                if (window.studyApp.showNotification) {
-                    window.studyApp.showNotification(
-                        'Welcome! Sample study plans loaded for Robotics & AI student. You can edit or delete them anytime.',
-                        'info',
-                        true
-                    );
-                }
-            }, 2000);
+    if (window.studyApp.showNotification) {
+        window.studyApp.showNotification(
+            'Welcome! Sample study plans loaded...',
+            'info',
+            true
+        );
+    }
+}, 100); // ← Much faster!
+
         }
     }
 });

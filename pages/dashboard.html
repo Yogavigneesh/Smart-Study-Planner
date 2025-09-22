@@ -333,14 +333,14 @@
         function loadDashboardData() {
             showLoading(true);
             
-            setTimeout(() => {
-                updateStatistics();
-                loadStudyPlans();
-                loadRecentActivity();
-                loadUpcomingDeadlines();
-                updateProgressOverview();
-                showLoading(false);
-            }, 500); // Simulate loading time
+            // Remove artificial delay - load instantly
+updateStatistics();
+loadStudyPlans();
+loadRecentActivity();
+loadUpcomingDeadlines();
+updateProgressOverview();
+showLoading(false);
+
         }
 
         // Update statistics cards
