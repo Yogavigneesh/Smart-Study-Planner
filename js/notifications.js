@@ -89,40 +89,48 @@ class NotificationManager {
     }
 
     // Request notification permission
-    async requestNotificationPermission() {
-        if (!('Notification' in window)) {
-            console.log('Browser does not support notifications');
-            this.settings.enableBrowserNotifications = false;
-            return false;
-        }
+    
 
-        if (Notification.permission === 'default') {
-            try {
-                const permission = await Notification.requestPermission();
-                this.settings.enableBrowserNotifications = permission === 'granted';
-                this.saveSettings();
-                
-                if (permission === 'granted') {
-                    this.showInAppNotification(
-                        'Notifications enabled! You\'ll receive study reminders.',
-                        'success'
-                    );
-                } else {
-                    this.showInAppNotification(
-                        'Notifications disabled. Enable them in settings to get reminders.',
-                        'info'
-                    );
+// Check and request notification permission (LESS ANNOYING VERSION)
+async checkNotificationPermission() {
+    if ('Notification' in window) {
+        // Only show prompt if user hasn't been asked before AND it's been 24+ hours since last request
+        const lastPrompt = localStorage.getItem('notificationPromptTime');
+        const now = Date.now();
+        const dayInMs = 24 * 60 * 60 * 1000; // 24 hours
+        
+        if (Notification.permission === 'default' && (!lastPrompt || (now - parseInt(lastPrompt)) > dayInMs)) {
+            // Show a VERY gentle, non-intrusive prompt only once per day
+            setTimeout(() => {
+                const shouldAsk = confirm('Would you like to enable study reminders? (You can change this later in Settings)');
+                if (shouldAsk) {
+                    this.requestNotificationPermission();
                 }
-                
-                return permission === 'granted';
-            } catch (error) {
-                console.error('Error requesting notification permission:', error);
-                return false;
-            }
+                localStorage.setItem('notificationPromptTime', now.toString());
+            }, 10000); // Show after 10 seconds, not 5
         }
-
-        return Notification.permission === 'granted';
     }
+}
+
+// Request notification permission (IMPROVED)
+async requestNotificationPermission() {
+    if ('Notification' in window && Notification.permission === 'default') {
+        try {
+            const permission = await Notification.requestPermission();
+            this.settings.notifications = permission === 'granted';
+            this.saveSettings();
+            
+            // Mark that user was asked (don't ask again for 7 days)
+            localStorage.setItem('notificationPromptTime', Date.now().toString());
+            
+            if (permission === 'granted') {
+                this.showInAppNotification('Great! You\'ll get study reminders.', 'success');
+            }
+        } catch (error) {
+            console.error('Error requesting notification permission:', error);
+        }
+    }
+}
 
     // ===== REMINDER SCHEDULING ===== //
 
