@@ -370,71 +370,75 @@ showLoading(false);
 
 
         // Load study plans into grid
-        function loadStudyPlans() {
-            const plansGrid = document.getElementById('plansGrid');
-            const emptyState = document.getElementById('emptyState');
-            const plans = studyApp.studyPlans || [];
-            
-            if (plans.length === 0) {
-                plansGrid.style.display = 'none';
-                emptyState.style.display = 'block';
-                return;
-            }
-            
-            plansGrid.style.display = 'grid';
-            emptyState.style.display = 'none';
-            
-            // Sort plans by most recent first
-            const sortedPlans = [...plans].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            
-            plansGrid.innerHTML = sortedPlans.map(plan => createPlanCard(plan)).join('');
-            
-            // Add event listeners to plan cards
-            addPlanCardEvents();
-        }
+       function loadStudyPlans() {
+    const plansGrid = document.getElementById('plansGrid');
+    const emptyState = document.getElementById('emptyState');
+    
+    // SAFE CHECK: Ensure studyApp exists and studyPlans is array
+    let plans = [];
+    if (studyApp && studyApp.studyPlans && Array.isArray(studyApp.studyPlans)) {
+        plans = studyApp.studyPlans;
+    }
+    
+    console.log('Loading plans:', plans.length, 'plans found'); // Debug
+    
+    if (plans.length === 0) {
+        plansGrid.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+    }
+    
+    plansGrid.style.display = 'grid';
+    emptyState.style.display = 'none';
+    
+    // Sort plans by most recent first - SAFE VERSION
+    const sortedPlans = plans.slice().sort((a, b) => {
+        const dateA = new Date(b.createdAt || 0);
+        const dateB = new Date(a.createdAt || 0);
+        return dateA - dateB;
+    });
+    
+    plansGrid.innerHTML = sortedPlans.map(plan => createPlanCard(plan)).join('');
+    
+    // Add event listeners to plan cards
+    addPlanCardEvents();
+}
+
 
         // Create study plan card HTML
-        function createPlanCard(plan) {
-            const progress = studyApp.calculateProgress(plan.tasks || []);
-            const priorityClass = plan.priority || 'medium';
-            const statusClass = plan.status || 'active';
-            
-            return `
-                <div class="study-card" data-plan-id="${plan.id}">
-                    <div class="card-header">
-                        <h3 class="card-title">${plan.title}</h3>
-                        <span class="card-priority ${priorityClass}">${priorityClass}</span>
-                    </div>
-                    <p class="card-description">${plan.description || 'No description provided.'}</p>
-                    <div class="card-progress">
-                        <div class="progress-header">
-                            <span class="progress-label">Progress</span>
-                            <span class="progress-percentage">${progress}%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: ${progress}%"></div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <span class="card-date">
-                            <i class="fas fa-calendar"></i>
-                            Due: ${studyApp.formatRelativeDate(plan.deadline)}
-                        </span>
-                        <div class="card-actions">
-                            <button class="btn-icon view" onclick="viewPlan('${plan.id}')" data-tooltip="View Details">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn-icon edit" onclick="editPlan('${plan.id}')" data-tooltip="Edit Plan">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-icon delete" onclick="deletePlan('${plan.id}')" data-tooltip="Delete Plan">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
+       function createPlanCard(plan) {
+    // Safe defaults for missing data
+    const progress = plan.progress || 0;
+    const priorityClass = plan.priority || 'medium';
+    const statusClass = plan.status || 'active';
+    const title = plan.title || 'Untitled Plan';
+    const description = plan.description || 'No description provided.';
+    const tasks = plan.tasks || [];
+    const completedTasks = tasks.filter(t => t && t.completed).length;
+    
+    return `
+        <div class="study-card" data-plan-id="${plan.id}">
+            <div class="card-header">
+                <h3 class="card-title">${title}</h3>
+                <span class="card-priority ${priorityClass}">${priorityClass}</span>
+            </div>
+            <p class="card-description">${description}</p>
+            <div class="card-progress">
+                <div class="progress-header">
+                    <span class="progress-label">Progress</span>
+                    <span class="progress-percentage">${progress}%</span>
                 </div>
-            `;
-        }
+                <div class="progress-bar">
+                    <div class="progress" style="width: ${progress}%"></div>
+                </div>
+            </div>
+            <div class="card-meta">
+                <span class="card-tasks">${completedTasks}/${tasks.length} tasks</span>
+                <span class="card-deadline">Due: ${plan.deadline ? studyApp.formatDate(plan.deadline) : 'No deadline'}</span>
+            </div>
+        </div>
+    `;
+}
 
         // Add event listeners to plan cards
         function addPlanCardEvents() {
@@ -608,6 +612,25 @@ showLoading(false);
                 studyApp.openModal('deleteModal');
             }
         }
+        // DEBUG: Force load sample data if empty
+setTimeout(() => {
+    if (!studyApp.studyPlans || studyApp.studyPlans.length === 0) {
+        console.log('No plans found, loading sample data...');
+        
+        // Check if sample data script exists
+        if (window.sampleStudyPlans) {
+            studyApp.studyPlans = window.sampleStudyPlans;
+            studyApp.saveToStorage();
+            console.log('Sample data loaded:', studyApp.studyPlans.length, 'plans');
+            
+            // Reload dashboard
+            loadDashboardData();
+        } else {
+            console.log('Sample data script not found');
+        }
+    }
+}, 1000);
+
     </script>
 </body>
 </html>
