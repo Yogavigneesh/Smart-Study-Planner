@@ -344,26 +344,30 @@ showLoading(false);
         }
 
         // Update statistics cards
-        function updateStatistics() {
-            const plans = studyApp.studyPlans || [];
-            
-            document.getElementById('totalPlansCount').textContent = plans.length;
-            document.getElementById('activePlansCount').textContent = 
-                plans.filter(plan => plan.status === 'active').length;
-            document.getElementById('completedPlans').textContent = 
-                plans.filter(plan => plan.status === 'completed').length;
-            
-            // Calculate upcoming deadlines (within 7 days)
-            const now = new Date();
-            const weekFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
-            const upcomingCount = plans.filter(plan => {
-                if (!plan.deadline) return false;
-                const deadline = new Date(plan.deadline);
-                return deadline >= now && deadline <= weekFromNow;
-            }).length;
-            
-            document.getElementById('upcomingDeadlines').textContent = upcomingCount;
-        }
+ function updateStatistics() {
+    // Ensure studyApp exists and studyPlans is an array
+    const plans = (studyApp && Array.isArray(studyApp.studyPlans)) ? studyApp.studyPlans : [];
+    
+    console.log('Plans for statistics:', plans); // Debug log
+    
+    document.getElementById('totalPlansCount').textContent = plans.length;
+    document.getElementById('activePlansCount').textContent = 
+        plans.filter(plan => plan && plan.status === 'active').length;
+    document.getElementById('completedPlans').textContent = 
+        plans.filter(plan => plan && plan.status === 'completed').length;
+    
+    // Calculate upcoming deadlines (within 7 days)
+    const now = new Date();
+    const weekFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+    const upcomingCount = plans.filter(plan => {
+        if (!plan || !plan.deadline) return false;
+        const deadline = new Date(plan.deadline);
+        return deadline >= now && deadline <= weekFromNow;
+    }).length;
+    
+    document.getElementById('upcomingDeadlines').textContent = upcomingCount;
+}
+
 
         // Load study plans into grid
         function loadStudyPlans() {
