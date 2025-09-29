@@ -6,10 +6,9 @@
     <title>All Plans - Smart Study Planner</title>
     
     <!-- Favicon -->
-     <link rel="icon" type="image/x-icon" href="../favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <!-- Stop favicon errors -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+
     
     <!-- CSS Files -->
     <link rel="stylesheet" href="../css/style.css">
@@ -399,24 +398,34 @@
 
         // Load all study plans
         function loadAllPlans() {
-            showLoading(true);
-            
-            // Load instantly without delay
-const allPlans = studyApp.studyPlans || [];
-filteredPlans = [...allPlans];
-
-if (allPlans.length === 0) {
-    showNoPlansState();
-} else {
-    hideNoPlansState();
-    applySorting();
-    renderPlans();
-}
-
-updateSummary();
-showLoading(false);
-
+    showLoading(true);
+    
+    try {
+        // SAFE CHECK: Ensure studyApp exists and studyPlans is array
+        let allPlans = [];
+        if (studyApp && studyApp.studyPlans && Array.isArray(studyApp.studyPlans)) {
+            allPlans = studyApp.studyPlans;
         }
+        
+        console.log('Loading all plans:', allPlans.length, 'plans found'); // Debug
+        
+        filteredPlans = [...allPlans];
+        
+        if (allPlans.length === 0) {
+            showNoPlansState();
+        } else {
+            hideNoPlansState();
+            applySorting();
+            renderPlans();
+        }
+        
+        updateSummary();
+    } catch (error) {
+        console.error('Error loading plans:', error);
+    } finally {
+        showLoading(false);
+    }
+}
 
         // Setup event listeners
         function setupEventListeners() {
@@ -467,44 +476,7 @@ showLoading(false);
         }
 
         // Apply filters
-        function applyFilters() {
-            const allPlans = studyApp.studyPlans || [];
-            
-            filteredPlans = allPlans.filter(plan => {
-                // Search filter
-                if (currentFilters.search) {
-                    const searchTerm = currentFilters.search;
-                    const searchable = `${plan.title} ${plan.description} ${plan.subject}`.toLowerCase();
-                    if (!searchable.includes(searchTerm)) return false;
-                }
-                
-                // Status filter
-                if (currentFilters.status !== 'all' && plan.status !== currentFilters.status) {
-                    return false;
-                }
-                
-                // Priority filter
-                if (currentFilters.priority !== 'all' && plan.priority !== currentFilters.priority) {
-                    return false;
-                }
-                
-                // Subject filter
-                if (currentFilters.subject !== 'all' && plan.subject !== currentFilters.subject) {
-                    return false;
-                }
-                
-                // Due soon filter
-                if (currentFilters.dueSoon) {
-                    const now = new Date();
-                    const weekFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
-                    const deadline = new Date(plan.deadline);
-                    if (!plan.deadline || deadline > weekFromNow || deadline < now) {
-                        return false;
-                    }
-                }
-                
-                return true;
-            });
+       
             
             applySorting();
             renderPlans();
@@ -515,8 +487,64 @@ showLoading(false);
                 showEmptyState();
             } else {
                 hideEmptyState();
+            }function applyFilters() {
+    // SAFE CHECK: Ensure studyApp exists and studyPlans is array
+    let allPlans = [];
+    if (studyApp && studyApp.studyPlans && Array.isArray(studyApp.studyPlans)) {
+        allPlans = studyApp.studyPlans;
+    }
+    
+    filteredPlans = allPlans.filter(plan => {
+        if (!plan) return false; // Safety check for null/undefined plans
+        
+        // Search filter
+        if (currentFilters.search) {
+            const searchTerm = currentFilters.search;
+            const searchable = `${plan.title || ''} ${plan.description || ''} ${plan.subject || ''}`.toLowerCase();
+            if (!searchable.includes(searchTerm)) return false;
+        }
+        
+        // Status filter
+        if (currentFilters.status !== 'all' && plan.status !== currentFilters.status) {
+            return false;
+        }
+        
+        // Priority filter
+        if (currentFilters.priority !== 'all' && plan.priority !== currentFilters.priority) {
+            return false;
+        }
+        
+        // Subject filter
+        if (currentFilters.subject !== 'all' && plan.subject !== currentFilters.subject) {
+            return false;
+        }
+        
+        // Due soon filter
+        if (currentFilters.dueSoon) {
+            const now = new Date();
+            const weekFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+            const deadline = new Date(plan.deadline);
+            if (!plan.deadline || deadline > weekFromNow || deadline < now) {
+                return false;
             }
         }
+        
+        return true;
+    });
+    
+    applySorting();
+    renderPlans();
+    updateSummary();
+    
+    // Show empty state if no results
+    if (filteredPlans.length === 0) {
+        showEmptyState();
+    } else {
+        hideEmptyState();
+    }
+}
+
+        
 
         // Apply sorting
         function applySorting() {
